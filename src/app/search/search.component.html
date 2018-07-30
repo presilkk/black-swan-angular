@@ -1,0 +1,92 @@
+<ng2-slim-loading-bar></ng2-slim-loading-bar>
+<div class="top-nav-bar">
+  Black Swan Data Test
+</div>
+
+<div class="ui-g search-box-field">
+  <div class="ui-g-8  ui-md-8 ui-sm-12 ui-g-offset-1 ">
+    <input id="search_name_input" class="ui-g-12 ui-md-12 ui-sm-12 search_name_input" type="text" pInputText [(ngModel)]="search_name" 
+    (keyup.enter)="searchRepo()" placeholder="Search for a repository by name"> 
+  </div>
+  <div class="ui-g-2 ui-md-2 ui-sm-12 ui-sm-offset-1">
+      <button type="button" class="submit-button" (onClick)="searchRepo()" label="Search">Search</button>
+  </div>
+    
+</div>
+
+
+<p-dataView *ngIf="repository_items" [value]="repository_items" [loading]="issue_loading" [paginator]="isPaginatorVisible" [rows]="10" paginatorPosition="bottom" filterBy="name"
+    [sortField]="sortField" [sortOrder]="sortOrder">
+    <ng-template let-item pTemplate="listItem">
+        <div class="ui-g" style="padding: 2em;">
+            <div class="list_item">
+                <div class="body css-truncate ui-g">
+                  <h4 class="card-name">
+                    <span class="css-truncate-target ui-g-12 ui-sm-12">{{item.name}}</span>
+                  </h4>
+                  <span class="repo-description ui-g-12 ui-sm-12">{{item.description}}</span>
+                </div>
+                <div class="stargazers-section ui-g">
+                    <span class="ui-g-6 ui-sm-12">
+                        <i class="fa fa-star"></i>
+                        <span>{{item.stargazers_count}} stargazers</span>
+                    </span>
+                    <span class="ui-g-6 ui-sm-12">
+                      <a class="group issue-link" href="#" (click)="openModal($event, issueTemplate, item)">
+                          {{item.open_issues_count}} open issues
+                      </a>
+                    </span>
+                  </div>
+                <div class="owner-details-section ui-g">
+                  <span class="ui-g-6 ui-sm-12">
+                      <span><img src="{{item.owner.avatar_url}}" alt="{{item.owner.login}}" class="avatar"></span>
+                      <span class="owner-name">{{item.owner.login}}</span>
+                  </span>
+                  <span class="ui-g-6 ui-sm-12">
+                      <i class="fa fa-code-fork"></i>
+                      <span>{{item.forks_count}} forks</span>
+                  </span>
+                </div>
+            </div>
+
+
+        </div>
+    </ng-template>
+</p-dataView>
+
+<ng-template #issueTemplate style= "max-width: 80%">
+  <div class="modal-header">
+      <h4 class="modal-title pull-left">Issues in {{issue_name}}</h4>
+      <button type="button" class="close pull-right" 
+              aria-label="Close" (click)="modalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  </div>
+  <p-table [columns]="cols" [value]="issues" [scrollable]="true" [loading]="issue_loading" scrollHeight="400px" [paginator]="true" [rows]="20">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns">
+                {{col.header}}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            <td class="issueDetails" *ngFor="let col of columns">
+                    {{rowData[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+            <td [attr.colspan]="columns.length">
+                No records found
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</ng-template>
+
+<footer>
+
+</footer>
