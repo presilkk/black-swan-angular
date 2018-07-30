@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { GithubSearchService } from '../github-search.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
+import { GithubSearchService } from '../github-search.service';
 
 @Component({
   selector: 'app-search',
@@ -17,6 +17,7 @@ export class SearchComponent implements OnInit {
     private _spinService: SlimLoadingBarService
   ) { }
   public modalRef: BsModalRef; // {1}
+  public chartModalRef: BsModalRef;
   search_name: string;
   response_data;
   repository_items: any[];
@@ -27,6 +28,7 @@ export class SearchComponent implements OnInit {
   repo_loading: boolean;
   isPaginatorVisible: boolean;
   issue_name: "";
+  chartData: any;
   
   ngOnInit() {
     this.cols = [
@@ -48,7 +50,7 @@ export class SearchComponent implements OnInit {
           this._spinService.complete()
         }
         });
-    }, 1000);
+    }, 100);
     
 
   }
@@ -65,7 +67,33 @@ export class SearchComponent implements OnInit {
         this._spinService.complete()
         this.modalRef = this.modalService.show(template);
       })
-    }, 1000);
+    }, 100);
+    
+  }
+
+  openChart(event, template, item){
+    event.preventDefault()
+    this._spinService.start();
+    this.issue_name = item.name;
+    this.chartData = {
+      labels: ['open issues','stargazers','forks'],
+      datasets: [
+          {
+              data: [item.open_issues_count, item.stargazers_count, item.forks_count],
+              backgroundColor: [
+                  "#FF6384",
+                  "#36A2EB",
+                  "#FFCE56"
+              ],
+              hoverBackgroundColor: [
+                  "#FF6384",
+                  "#36A2EB",
+                  "#FFCE56"
+              ]
+          }]    
+      };
+      this._spinService.complete()
+      this.chartModalRef = this.modalService.show(template);
     
   }
 }
