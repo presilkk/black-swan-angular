@@ -1,3 +1,12 @@
+Code is written in Angular 5 with typescript.
+
+Have made use of the following libraries
+
+primeng
+chart js
+ng2 slim loading bar
+bootstrap module
+
 # GitSearchApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.1.
