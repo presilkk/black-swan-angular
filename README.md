@@ -2,10 +2,10 @@ Code is written in Angular 5 with typescript.
 
 Have made use of the following libraries
 
-primeng
-chart js
-ng2 slim loading bar
-bootstrap module
+1. primeng
+2. chart.js
+3. ng2-slim-loading-bar
+4. bootstrap module
 
 # GitSearchApp
 
